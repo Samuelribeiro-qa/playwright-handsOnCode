@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test'
-
 import { loadHomePage, fillInData, logPerfil } from '../helpers'
 
 test('Perfil', async ({ page }) => {
