@@ -1,66 +1,40 @@
-import {test, expect} from '@playwright/test'
+import { test, expect } from '@playwright/test'
 
-test('Perfil', async ({page})=> {
-        // Acessar o site
-        await page.goto('/');
+import { loadHomePage, fillInData, logPerfil } from '../helpers'
 
-        // Verificar se está no site
-        await expect(page).toHaveTitle("Entrar - Hands On Code");
-    
-        // Preenchendo o Campo e-mail
-        await page.getByPlaceholder('Digite seu e-mail...').click()
-        await page.getByPlaceholder('Digite seu e-mail...').fill('samuelvinicius.vr@gmail.com')
-    
-        // Preenchendo o Campo senha
-        await page.getByPlaceholder('Digite sua senha...').click()
-        await page.getByPlaceholder('Digite sua senha...').fill('@Handsoncode_administrativo2025')
-    
-        // Clicando no botão Entrar
-        await page.getByRole('button').click()
-    
-        await page.goto('https://app.eadhandsoncode.com.br/campus/')
-    
-        // Mensagem esperada
-        await expect(page.getByRole('link', { name: 'Hands On Code' })).toBeVisible()
+test('Perfil', async ({ page }) => {
+    // Entrar no site
+    await loadHomePage(page)
 
-        // Clicar no meu Perfil
-        await page.getByRole('link', { name: 'Samuel Vinicius ' }).click()
+    await expect(page).toHaveTitle("Entrar - Hands On Code")
 
-        await page.goto('https://app.eadhandsoncode.com.br/campus/meu-perfil')
-
-        await expect(page.getByRole('heading', { name: 'Samuel Vinicius' })).toBeVisible()
-})
-
-test('Meus dados', async ({page})=> {
-    // Acessar o site
-    await page.goto('/');
-
-    // Verificar se está no site
-    await expect(page).toHaveTitle("Entrar - Hands On Code");
-
-    // Preenchendo o Campo e-mail
-    await page.getByPlaceholder('Digite seu e-mail...').click()
-    await page.getByPlaceholder('Digite seu e-mail...').fill('samuelvinicius.vr@gmail.com')
-
-    // Preenchendo o Campo senha
-    await page.getByPlaceholder('Digite sua senha...').click()
-    await page.getByPlaceholder('Digite sua senha...').fill('@Handsoncode_administrativo2025')
-
-    // Clicando no botão Entrar
-    await page.getByRole('button').click()
-
-    await page.goto('https://app.eadhandsoncode.com.br/campus/')
+    // Preencher os campos
+    await fillInData(page)
 
     // Mensagem esperada
     await expect(page.getByRole('link', { name: 'Hands On Code' })).toBeVisible()
 
-    // Clicar no meu Perfil
-    await page.getByRole('link', { name: 'Samuel Vinicius ' }).click()
+    // Logar no perfil
+    await logPerfil(page)
 
-    // Entrar no meu perfil
-    await page.goto('https://app.eadhandsoncode.com.br/campus/meu-perfil')
+    await expect(page.getByRole('heading', { name: 'Samuel Vinicius' })).toBeVisible()
+})
 
-    // Verificar se estou realmente acessando
+test('Meus dados', async ({ page }) => {
+    // Entrar no site
+    await loadHomePage(page)
+
+    await expect(page).toHaveTitle("Entrar - Hands On Code")
+
+    // Preencher os campos
+    await fillInData(page)
+
+    // Mensagem esperada
+    await expect(page.getByRole('link', { name: 'Hands On Code' })).toBeVisible()
+
+    // Logar no perfil
+    await logPerfil(page)
+
     await expect(page.getByRole('heading', { name: 'Samuel Vinicius' })).toBeVisible()
 
     // Clicar em Meus Dados 
@@ -90,4 +64,88 @@ test('Meus dados', async ({page})=> {
     await expect(page.locator('input[name="addr_street"]')).toHaveValue('Rua Daniel Ribeiro Calado')
     await expect(page.locator('input[name="addr_state"]')).toHaveValue('SP')
     await expect(page.locator('input[name="addr_country"]')).toHaveValue('Brasil')
+})
+
+test('Meus certificados', async ({ page }) => {
+
+    // Entrar no site
+    await loadHomePage(page)
+
+    await expect(page).toHaveTitle("Entrar - Hands On Code")
+
+    // Preencher os campos
+    await fillInData(page)
+
+    // Mensagem esperada
+    await expect(page.getByRole('link', { name: 'Hands On Code' })).toBeVisible()
+
+    // Logar no perfil
+    await logPerfil(page)
+
+    await expect(page.getByRole('heading', { name: 'Samuel Vinicius' })).toBeVisible()
+
+    // Clicar em Meus Certificados 
+    await page.getByRole('link', { name: ' Meus certificados' }).nth(1)
+
+    // Estar dentro da url de Meus certificados
+    await page.goto('https://app.eadhandsoncode.com.br/campus/certificados')
+
+    await expect(page.getByText('Você ainda não tem')).toBeVisible()
+})
+
+test('Meus pedidos', async ({ page }) => {
+    // Entrar no site
+    await loadHomePage(page)
+
+    await expect(page).toHaveTitle("Entrar - Hands On Code")
+
+    // Preencher os campos
+    await fillInData(page)
+
+    // Mensagem esperada
+    await expect(page.getByRole('link', { name: 'Hands On Code' })).toBeVisible()
+
+    // Logar no perfil
+    await logPerfil(page)
+
+    await expect(page.getByRole('heading', { name: 'Samuel Vinicius' })).toBeVisible()
+
+    // Clicar em Meus pedidos 
+    await page.getByRole('link', { name: ' Meus pedidos' }).nth(1)
+
+    // Estar dentro da url de Meus pedidoss
+    await page.goto('https://app.eadhandsoncode.com.br/campus/meus-pedidos')
+
+    await expect(page.getByRole('cell', { name: 'Produto' })).toBeVisible()
+    await expect(page.getByRole('cell', { name: 'Data' })).toBeVisible()
+    await expect(page.getByRole('cell', { name: 'Valor' })).toBeVisible()
+    await expect(page.getByRole('cell', { name: 'Status' })).toBeVisible()
+    await expect(page.getByRole('cell', { name: 'Garantia' })).toBeVisible()
+    await expect(page.getByRole('cell', { name: 'Reembolso' })).toBeVisible()
+})
+
+test('Minha Senha', async ({ page }) => {
+    // Entrar no site
+    await loadHomePage(page)
+
+    await expect(page).toHaveTitle("Entrar - Hands On Code")
+
+    // Preencher os campos
+    await fillInData(page)
+
+    // Mensagem esperada
+    await expect(page.getByRole('link', { name: 'Hands On Code' })).toBeVisible()
+
+    // Logar no perfil
+    await logPerfil(page)
+
+    await expect(page.getByRole('heading', { name: 'Samuel Vinicius' })).toBeVisible()
+
+    // Clicar em Minha senha 
+    await page.getByRole('link', { name: ' Minha senha' }).nth(1)
+
+    // Estar dentro da url de Minha senha
+    await page.goto('https://app.eadhandsoncode.com.br/campus/minha-senha')
+
+    await expect(page.locator('input[type="email"]')).toHaveValue('samuelvinicius.vr@gmail.com')
 })
