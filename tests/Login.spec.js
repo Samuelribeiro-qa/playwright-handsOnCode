@@ -1,8 +1,9 @@
 import {test, expect} from '@playwright/test'
+import { loadHomePage } from '../helpers';
 
 test('Login com sucesso!', async ({page})=> {
     // Acessar o site
-    await page.goto('/');
+    await loadHomePage(page)
 
     // Verificar se está no site
     await expect(page).toHaveTitle("Entrar - Hands On Code");
@@ -26,7 +27,7 @@ test('Login com sucesso!', async ({page})=> {
 
 test('Não deve logar com e-mail inválido', async ({page})=> {
     // Acessar o site
-    await page.goto('/');
+    await loadHomePage(page)
 
     // Verificar se está no site
     await expect(page).toHaveTitle("Entrar - Hands On Code");
@@ -54,7 +55,7 @@ test('Não deve logar com e-mail inválido', async ({page})=> {
 
 test('Não deve logar com senha incorreta', async ({page})=> {
     // Acessar o site
-    await page.goto('/');
+    await loadHomePage(page)
 
     // Verificar se está no site
     await expect(page).toHaveTitle("Entrar - Hands On Code");
@@ -80,7 +81,7 @@ test('Não deve logar com senha incorreta', async ({page})=> {
 
 test('Não deve logar com os campos vazios', async ({page})=> {
     // Acessar o site
-    await page.goto('/');
+    await loadHomePage(page)
 
     // Verificar se está no site
     await expect(page).toHaveTitle("Entrar - Hands On Code");
@@ -98,7 +99,7 @@ test('Não deve logar com os campos vazios', async ({page})=> {
 
 test('Não deve logar com o campo senha vazio', async ({page})=> {
     // Acessar o site
-    await page.goto('/');
+    await loadHomePage(page)
 
     // Verificar se está no site
     await expect(page).toHaveTitle("Entrar - Hands On Code");
