@@ -148,3 +148,29 @@ test('Minha Senha', async ({ page }) => {
 
     await expect(page.locator('input[type="email"]')).toHaveValue('samuelvinicius.vr@gmail.com')
 })
+
+test('Termos', async ({ page }) => {
+    // Entrar no site
+    await loadHomePage(page)
+
+    await expect(page).toHaveTitle("Entrar - Hands On Code")
+
+    // Preencher os campos
+    await fillInData(page)
+
+    // Mensagem esperada
+    await expect(page.getByRole('link', { name: 'Hands On Code' })).toBeVisible()
+
+    // Logar no perfil
+    await logPerfil(page)
+
+    await expect(page.getByRole('heading', { name: 'Samuel Vinicius' })).toBeVisible()
+
+    // Clicar em Minha senha 
+    await page.getByRole('link', { name: ' Termos' }).nth(1)
+
+    // Estar dentro da url de Minha senha
+    await page.goto('https://app.eadhandsoncode.com.br/campus/termos')
+
+    await expect(page.getByRole('heading', { name: 'TERMOS DE USO' })).toBeVisible()
+})
